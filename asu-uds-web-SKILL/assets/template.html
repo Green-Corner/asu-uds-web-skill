@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ASU UDS mockup</title>
+
+<!-- Shared UDS approximation stylesheet. Adjust the path if you move this file.
+     For pixel-exact output, drop the real theme.css into preview/ and swap this
+     link for it — see the header comment in uds-preview.css. -->
+<link rel="stylesheet" href="uds-preview.css">
+
+<!-- Real Font Awesome when online; uds-icons.js fills in offline. Both are
+     optional — delete either one. -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<script src="uds-icons.js" defer></script>
+</head>
+<body>
+
+<!-- ==========================================================================
+     HOW TO USE THIS FILE
+     1. Copy it wherever your output lives (then fix the stylesheet link and
+        icon script tag above to point at this skill's assets/ folder —
+        e.g. ../assets/uds-preview.css — if you moved the file elsewhere).
+     2. Paste component blocks from references/component-snippets.md between
+        the markers below. Each snippet gives you BOTH the preview HTML and
+        the matching WordPress block markup.
+     3. Open in a browser. No build step, no server needed.
+
+     THE FOUR RULES THAT BREAK MOCKUPS MOST OFTEN
+     - Every page needs the header and footer below. Not optional chrome.
+     - One hero per page. acf/hero is supports.multiple:false.
+     - Never two backgrounded sections back to back. Alternate
+       patterned/filled -> plain white -> patterned/filled.
+     - Gold button appears at most ONCE per page (the single top-priority CTA).
+     Full rules: references/brand-guide.md
+     ========================================================================== -->
+
+<!-- ===== GLOBAL HEADER (required, not a Pitchfork block — §7.17) ========== -->
+
+<div class="uds-global-header">
+  <div class="ugh-utility"><div class="ugh-utility-inner">
+    <a href="#">ASU Home</a><a href="#">My ASU</a><a href="#">Colleges and Schools</a><a href="#">Sign In</a>
+    <button aria-label="Search"><i class="fas fa-search"></i></button>
+  </div></div>
+  <div class="ugh-main"><div class="ugh-main-inner">
+    <a class="ugh-logo" href="#">Arizona State<br>University</a>
+    <span class="ugh-unit">Unit Name</span>
+    <nav class="ugh-nav">
+      <a href="#" class="active">Primary Link</a>
+      <a href="#">Primary Link</a>
+      <a href="#">Primary Link</a>
+    </nav>
+  </div></div>
+</div>
+
+<!-- ===== HERO (optional, max one) ========================================= -->
+
+<!-- Swap the gradient for your image: style="background-image:url(img/hero.jpg)" -->
+<div class="uds-hero-md alignfull has-btn-row" style="background-image:linear-gradient(135deg,#440E22,#8C1D40 45%,#191919)">
+  <div class="hero-overlay"></div>
+  <h1 class="has-white-color">Your headline <span class="highlight-gold">with a highlight</span></h1>
+  <div role="doc-subtitle" class="has-white-color">Short plain caption, no highlight</div>
+  <div class="content">
+    <p class="has-white-color">One or two sentences of intro copy. Delete this group if the hero is headline-only.</p>
+  </div>
+  <div class="btn-row">
+    <a class="wp-block-button__link has-asu-gold-background-color" href="#">Primary CTA</a>
+    <a class="wp-block-button__link has-asu-maroon-background-color" href="#">Secondary CTA</a>
+  </div>
+</div>
+
+<!-- ===== WHITE SECTION =================================================== -->
+
+<section class="uds-section alignfull">
+  <div class="acf-innerblocks-container">
+    <h2 style="margin-top:var(--s4);margin-bottom:var(--s2)">A section heading</h2>
+    <p class="is-style-lead">Lead-in paragraph. Use sparingly — one per section at most.</p>
+    <p>Body copy. Keep measure under about 700px so lines stay in the 45&ndash;80 character range.</p>
+  </div>
+</section>
+
+<!-- ===== PATTERNED SECTION ===============================================
+     Swap plus-light for any of the 12 slugs — PNGs live in assets/background-patterns/
+     Light: arrows-light, morse-code-white, network-white, plus-light,
+            semiconductor-light, topo-pattern-white
+     Dark:  arrows-dark, morse-code-black, network-black, plus-dark,
+            semiconductor-dark, topo-pattern-black  (contents need white text)
+     ======================================================================== -->
+
+<section class="uds-section alignfull bg plus-light">
+  <div class="acf-innerblocks-container">
+    <h2 style="margin-top:var(--s4);margin-bottom:var(--s2)">Content on a pattern</h2>
+    <p>Paste cards, columns or any other component here.</p>
+  </div>
+</section>
+
+<!-- ===== WHITE BREATHER — required between backgrounded sections ========== -->
+
+<section class="uds-section alignfull">
+  <div class="acf-innerblocks-container">
+    <h2 style="margin-top:var(--s4);margin-bottom:var(--s2)">Next section</h2>
+    <p>Plain white keeps two textured sections from colliding.</p>
+  </div>
+</section>
+
+<!-- ===== GLOBAL FOOTER (required, not a Pitchfork block — §7.17) ==========
+     This is the "full" composition. Swap for "collapsed" (brand row, no
+     extra .ugf-col columns) or "minimal" (delete .ugf-top entirely, keep
+     only .ugf-ribbon + .ugf-legal) if the unit doesn't need this much.
+     ======================================================================== -->
+
+<footer class="uds-global-footer">
+  <div class="ugf-top"><div class="ugf-top-inner">
+    <div class="ugf-brand">
+      <div class="ugf-logo"><strong>Unit Name</strong><span>Arizona State University</span></div>
+      <div class="ugf-social">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+      </div>
+    </div>
+    <div class="ugf-columns">
+      <div class="ugf-col ugf-col-brand">
+        <strong>Complete Name of College, School or Unit Title Here</strong>
+        <a href="#">Secondary Nav Link</a>
+        <a class="btn btn-gold" href="#">Support ASU</a>
+      </div>
+      <div class="ugf-col"><strong>Column Header</strong><a href="#">Secondary Nav Link</a><a href="#">Secondary Nav Link</a></div>
+    </div>
+  </div></div>
+  <div class="ugf-ribbon"><div class="ugf-ribbon-inner">
+    <a href="#">Maps and Locations</a><a href="#">Jobs</a><a href="#">Directory</a><a href="#">Contact ASU</a><a href="#">My ASU</a>
+    <span class="ugf-rank"><i class="fas fa-flag"></i> Repeatedly ranked #1<small>30+ lists in the last 3 years</small></span>
+  </div></div>
+  <div class="ugf-legal"><div class="ugf-legal-inner">
+    <a href="#">Copyright and Trademark</a><a href="#">Accessibility</a><a href="#">Terms of Use</a><a href="#">Emergency</a><a href="#">Privacy</a><a href="#">Manage My Privacy Settings</a>
+  </div></div>
+</footer>
+
+</body>
+</html>

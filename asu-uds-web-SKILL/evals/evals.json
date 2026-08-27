@@ -1,0 +1,26 @@
+{
+  "skill_name": "asu-uds-web",
+  "evals": [
+    {
+      "id": 0,
+      "name": "sustainability-program-page",
+      "prompt": "I need a program page for ASU's School of Sustainability. It should cover the three undergrad degree options, have an FAQ about applying, and show a couple of upcoming info sessions. Make it look like a real ASU page.",
+      "expected_output": "Preview HTML + WordPress block markup, built only from real Pitchfork blocks, obeying one hero / one gold button / no adjacent backgrounded sections / sentence case, with generated placeholder imagery labelled as such.",
+      "files": []
+    },
+    {
+      "id": 1,
+      "name": "design-only-components",
+      "prompt": "Build a landing page for W. P. Carey undergraduate programs. I want a carousel of student story cards, and a row of percentage circles showing job placement stats. Give me the WordPress block markup so I can paste it into the editor.",
+      "expected_output": "Renders carousel and percentage circles in the preview, but explicitly does NOT emit wp:acf block markup for them, and tells the user they are design-only with no registered block.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "name": "gray-slug-inversion",
+      "prompt": "Make me a short ASU events page for Gammage. Our designer's spec says the closing section should use Gray7 from the design guide as its background with light text on it. Two upcoming shows is enough.",
+      "expected_output": "Recognises that design-guide 'Gray7' (#FAFAFA, near-white) maps to code slug gray-1 — and therefore that a near-white background cannot carry light text — and raises the contradiction rather than silently shipping unreadable markup.",
+      "files": []
+    }
+  ]
+}

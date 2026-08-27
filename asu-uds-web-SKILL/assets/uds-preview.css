@@ -1,0 +1,1171 @@
+/* =============================================================================
+   uds-preview.css — ASU Unity Design System, mockup approximation stylesheet
+   -----------------------------------------------------------------------------
+   WHAT THIS IS
+   A hand-written approximation of the compiled Pitchfork/UDS CSS, built from the
+   documented class names and the canonical SCSS tokens in
+   docs/asu-uds-brand-guide.md (§7.13). It exists so that static HTML mockups
+   look close to a real asu.edu page without needing a WordPress install.
+
+   WHAT THIS IS NOT
+   This is NOT the real theme stylesheet. Exact type scale, card chrome, hover
+   states and edge-case responsive behavior will differ from production. Use it
+   to communicate layout and brand intent, not to sign off pixel specs.
+
+   WANT PIXEL-EXACT INSTEAD?
+   Copy the real compiled stylesheet from your Pitchfork theme
+   (wp-content/themes/pitchfork/dist/css/theme.css) into preview/theme.css, then
+   in your mockup swap the <link> to it. Real theme.css wins on accuracy every
+   time; keep this file only as the offline/no-install fallback.
+
+   TOKEN SOURCE
+   Every custom property below traces to _custom-asu-variables.scss. Do not
+   invent new values — if you need a color or space that isn't here, check the
+   brand guide first.
+   ========================================================================== */
+
+/* ---------------------------------------------------------------------------
+   1. Tokens  (from _custom-asu-variables.scss — brand guide §7.13)
+   NOTE THE GRAY INVERSION (§7.1): the CODE slug gray-1 is the LIGHTEST value
+   (#FAFAFA) and gray-7 is the DARKEST (#191919). The zeroheight design guide
+   numbers them the opposite way. Always use the code slugs here.
+   --------------------------------------------------------------------------- */
+:root {
+  /* primary */
+  --asu-maroon: #8C1D40;
+  --asu-gold:   #FFC627;
+  --asu-white:  #FFFFFF;
+  --asu-black:  #000000;
+
+  /* grayscale — CODE slugs (gray-1 = lightest) */
+  --gray-1: #FAFAFA;
+  --gray-2: #E8E8E8;
+  --gray-3: #D0D0D0;
+  --gray-4: #BFBFBF;
+  --gray-5: #747474;
+  --gray-6: #484848;
+  --gray-7: #191919;   /* base font color / default black level */
+
+  /* secondary accents — illustrations & graphics only, never UI backgrounds */
+  --asu-blue:      #00A3E0;
+  --asu-green:     #78BE20;
+  --asu-orange:    #FF7F32;
+  --asu-copper:    #AF674B;
+  --asu-turquoise: #4AB7C4;
+  --asu-pink:      #E74873;
+
+  /* visited / focus states */
+  --asu-darkgold:   #7F6227;
+  --asu-darkmaroon: #440E22;
+  --asu-bluefocus:  #00BAFF;
+
+  /* alerts */
+  --alert-error:      #CC2F2F;
+  --alert-warning:    #FF7F32;
+  --alert-info:       #00A3E0;
+  --alert-success:    #78BE20;
+  --alert-bg-error:   #F7DDDD;
+  --alert-bg-warning: #FFEADE;
+  --alert-bg-info:    #D6F0FA;
+  --alert-bg-success: #E9F5DB;
+
+  /* spacing scale — uds-size-spacing-N, 0.5rem per step */
+  --s1:  0.5rem;   /* 8px  */
+  --s2:  1rem;     /* 16px */
+  --s3:  1.5rem;   /* 24px */
+  --s4:  2rem;     /* 32px */
+  --s5:  2.5rem;   /* 40px */
+  --s6:  3rem;     /* 48px */
+  --s8:  4rem;     /* 64px */
+  --s12: 6rem;     /* 96px — the section-spacing value */
+
+  /* layout */
+  --content-max: 1200px;   /* theme.json settings.layout.contentSize */
+  --page-max:    1920px;   /* backgrounds/images ceiling, §4 */
+  --gutter:      24px;
+
+  /* component */
+  --pill: 400rem;          /* $uds-component-border-radius — fully round */
+}
+
+/* ---------------------------------------------------------------------------
+   2. Base typography  (§3 — Arial only, weights 400/700, no light/italic)
+   --------------------------------------------------------------------------- */
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, 'Nimbus Sans L', 'Liberation Sans', FreeSans, sans-serif;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  color: var(--gray-7);
+  background: var(--asu-white);
+}
+
+h1, h2, h3, h4, h5 { font-weight: 700; margin: 0; }
+h1 { font-size: 4rem;    line-height: 4.25rem;  letter-spacing: -0.035em; }
+h2 { font-size: 2.5rem;  line-height: 2.75rem;  letter-spacing: -0.035em; }
+h3 { font-size: 1.5rem;  line-height: 1.75rem; }
+h4 { font-size: 1.25rem; line-height: 1.625rem; letter-spacing: -0.015em; }
+h5 { font-size: 1rem;    line-height: 1.5rem;   letter-spacing: -0.015em; }
+
+/* long-headline H1 variant used on article/interior pages */
+h1.article, .is-style-article h1 { font-size: 3rem; line-height: 3.25rem; }
+
+p { margin: 0 0 var(--s2); }
+a { color: var(--asu-maroon); }
+a:hover { text-decoration: none; }
+
+/* Body Large — lead-in paragraphs. Use sparingly (§3). */
+.is-style-lead { font-size: 1.25rem; line-height: 1.75rem; }
+small, .body-small { font-size: 0.875rem; line-height: 1.125rem; }
+
+b, strong { font-weight: 700; }
+u, ins, abbr { text-decoration: none; }
+
+/* Text highlights (§3) — headings 1-4 ONLY, never body copy.
+   box-decoration-break makes the block wrap per line like the real thing. */
+.highlight-gold, .highlight-black, .highlight-white {
+  padding: 0 0.25em;
+  -webkit-box-decoration-break: clone;
+          box-decoration-break: clone;
+}
+.highlight-gold  { background: var(--asu-gold);  color: var(--gray-7); }
+.highlight-black { background: var(--gray-7);    color: var(--asu-white); }
+.highlight-white { background: var(--gray-1);    color: var(--gray-7); }
+
+/* WP color utility classes */
+.has-white-color      { color: var(--asu-white); }
+.has-gray-7-color     { color: var(--gray-7); }
+.has-asu-maroon-color { color: var(--asu-maroon); }
+
+/* accessible focus ring — replaces the default outline everywhere */
+a:focus-visible, button:focus-visible, input:focus-visible, .btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 8px var(--asu-bluefocus);
+}
+
+/* ---------------------------------------------------------------------------
+   3. Buttons  (§6.2 / §7.5)
+   Maroon is the default. Gold is reserved for the single highest-priority CTA
+   on a page — if you have two gold buttons, one of them is wrong.
+   --------------------------------------------------------------------------- */
+.wp-block-buttons { display: flex; flex-wrap: wrap; gap: var(--s2); margin: 0; }
+
+.wp-block-button__link,
+.btn {
+  display: inline-block;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1rem;
+  padding: 1rem 2rem;              /* $uds-component-button-padding-y / -x */
+  border: 0;
+  border-radius: var(--pill);
+  cursor: pointer;
+  transition: 30ms ease-in-out;
+}
+
+/* block-editor color classes */
+.has-asu-maroon-background-color { background: var(--asu-maroon); color: var(--asu-white); }
+.has-asu-gold-background-color   { background: var(--asu-gold);   color: var(--asu-black); }
+.has-gray-7-background-color.wp-block-button__link { background: var(--gray-7); color: var(--asu-white); }
+
+/* classic bootstrap equivalents */
+.btn-maroon { background: var(--asu-maroon); color: var(--asu-white); }
+.btn-gold   { background: var(--asu-gold);   color: var(--asu-black); }
+.btn-dark   { background: var(--gray-7);     color: var(--asu-white); }
+
+/* sizes */
+.btn-sm, .is-style-uds-sm .wp-block-button__link { padding: 0.25rem 0.75rem; font-size: 0.875rem; }
+.is-style-uds-md .wp-block-button__link,
+.wp-block-button.is-style-uds-md .wp-block-button__link { padding: 0.5rem 1rem; }
+
+/* circular icon buttons (alert/banner close, hero video controls) */
+.btn-circle {
+  width: 2.25rem; height: 2.25rem; padding: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 50%; background: transparent;
+  border: 2px solid currentColor;
+}
+.btn-circle-large { width: 3.5rem; height: 3.5rem; }
+.btn-circle-alt-white { color: var(--asu-white); }
+.btn-circle-alt-black { color: var(--gray-7); }
+
+/* tag/badge chips — same pill radius */
+.badge {
+  display: inline-block; font-size: 0.75rem; font-weight: 700;
+  padding: 0.25rem 0.75rem; border-radius: var(--pill);
+}
+.badge.text-bg-gray-2 { background: var(--gray-2); color: var(--gray-7); }
+
+/* ---------------------------------------------------------------------------
+   4. Hero  (§7.7 / §7.14.1)
+   The real hero is CSS Grid ("UDS Hero v2 (CSS Grid-based)" per hero-video.php).
+   The grid seats the subtitle AFTER the headline even though acf/subtitle is
+   authored FIRST in the block's InnerBlocks. This flexbox `order` reproduces
+   that visual result. Content is bottom-left anchored over the image.
+   --------------------------------------------------------------------------- */
+[class^="uds-hero"] {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding: var(--s4);
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  margin-bottom: var(--s8);        /* block.json default: uds-size-8 */
+}
+.uds-hero-sm  { min-height: 340px; }
+.uds-hero-md  { min-height: 440px; }
+.uds-hero-lg  { min-height: 560px; }
+
+/* Directional scrim — dark where the text sits, clear elsewhere.
+   Do NOT flat-tint the whole photo; live ASU heroes keep the image bright. */
+.hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top right,
+    rgba(10,8,9,0.72) 0%, rgba(10,8,9,0.28) 40%, rgba(10,8,9,0) 66%);
+}
+
+[class^="uds-hero"] > * { position: relative; z-index: 2; max-width: 720px; }
+[class^="uds-hero"] h1                { order: 1; }
+[class^="uds-hero"] [role="doc-subtitle"] { order: 2; margin-top: var(--s2); font-size: 1rem; font-weight: 400; }
+[class^="uds-hero"] .content          { order: 3; margin-top: var(--s2); }
+[class^="uds-hero"] .content p        { font-size: 1.25rem; line-height: 1.75rem; margin: 0; }
+[class^="uds-hero"] .btn-row          { order: 4; display: flex; flex-wrap: wrap; gap: var(--s2); margin-top: var(--s4); }
+
+/* full-bleed hero image when supplied as <img class="hero"> rather than a bg */
+[class^="uds-hero"] img.hero {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; z-index: 0;
+}
+
+/* hero-video: video is HIDDEN below 992px — mobile falls back to the still */
+.uds-hero-video video,
+.uds-hero-video .hero-video-controls { display: none; }
+@media (min-width: 992px) {
+  .uds-hero-video { overflow: hidden; }
+  .uds-hero-video video {
+    display: block; position: absolute; top: 0; left: 50%;
+    transform: translateX(-50%); height: 100%; min-height: 100%; z-index: 1;
+  }
+  .uds-hero-video .hero-video-controls {
+    display: flex; gap: 0.5rem; position: absolute; z-index: 3;
+    right: var(--s4); bottom: var(--s4);
+    opacity: 0.4; transition: opacity 0.3s;
+  }
+  .uds-hero-video:hover .hero-video-controls { opacity: 1; }
+}
+
+/* ---------------------------------------------------------------------------
+   5. Background section  (§7.10.1)
+   Supplies the 96px desktop / 48px mobile section rhythm (§4) automatically —
+   prefer it over hand-set margins.
+   --------------------------------------------------------------------------- */
+.uds-section {
+  padding-top: var(--s6);
+  padding-bottom: var(--s6);
+}
+@media (min-width: 768px) {
+  .uds-section { padding-top: var(--s12); padding-bottom: var(--s12); }
+}
+
+/* ACF wraps InnerBlocks in this container; it holds the 1200px content column */
+.uds-section > .acf-innerblocks-container,
+.uds-section > .section-inner {
+  max-width: var(--content-max);
+  margin-left: auto; margin-right: auto;
+  padding: 0 2rem;
+}
+@media (min-width: 1260px) {
+  .uds-section > .acf-innerblocks-container,
+  .uds-section > .section-inner { padding: 0; }
+}
+
+/* flat color fills — ONLY these four are approved backgrounds (§2) */
+.uds-section.has-gray-1-background-color { background: var(--gray-1); }
+.uds-section.has-gray-2-background-color { background: var(--gray-2); }
+.uds-section.has-gray-7-background-color { background: var(--gray-7); color: var(--asu-white); }
+.uds-section.has-white-background-color  { background: var(--asu-white); }
+
+/* uploaded-image background branch */
+.uds-section.media-file { background-position: center; background-repeat: repeat; }
+
+/* --- The 12 background patterns (.bg.{slug}) ------------------------------
+   Mirrors _backgrounds.scss. Tiles are OPAQUE, not transparent overlays: the
+   PNG *is* the background, so backgroundColor is ignored on patterned sections.
+   Dark patterns need their contents to set white text explicitly.
+   Paths are relative to THIS stylesheet.
+
+   ⚠️ SET WHITE TEXT ON THE HEADING/PARAGRAPH ELEMENTS THEMSELVES
+   (has-white-color, or the has-white-color class already baked into a
+   component), NEVER as a blanket `style="color:white"` on the .uds-section
+   wrapper. Cards, the accordion, and every other white-background
+   sub-component INHERIT color unless they set their own — they're normal
+   dark-text-on-white boxes that happen to sit inside a dark section, and a
+   section-level color override cascades straight into them, producing
+   invisible white-on-white body copy inside an accordion panel or a card.
+   This is a real trap, not a hypothetical: a cold-tested build of this kit
+   hit it exactly this way. Target the text, not the section. */
+.uds-section.bg { background-repeat: repeat; }
+
+.bg.arrows-dark         { background-image: url("../assets/background-patterns/ArrowsDark.png"); }
+.bg.arrows-light        { background-image: url("../assets/background-patterns/ArrowsLight.png"); }
+.bg.morse-code-black    { background-image: url("../assets/background-patterns/MorseCodeBlack.png"); }
+.bg.morse-code-white    { background-image: url("../assets/background-patterns/MorseCodeWhite.png"); }
+.bg.network-black       { background-image: url("../assets/background-patterns/NetworkBlack.png"); }
+.bg.network-white       { background-image: url("../assets/background-patterns/NetworkWhite.png"); }
+.bg.plus-dark           { background-image: url("../assets/background-patterns/PlusDark.png"); }
+.bg.plus-light          { background-image: url("../assets/background-patterns/PlusLight.png"); }
+.bg.semiconductor-dark  { background-image: url("../assets/background-patterns/SemiconductorDark.png"); }
+.bg.semiconductor-light { background-image: url("../assets/background-patterns/SemiconductorLight.png"); }
+.bg.topo-pattern-black  { background-image: url("../assets/background-patterns/TopoPatternBlack.png"); }
+.bg.topo-pattern-white  { background-image: url("../assets/background-patterns/TopoPatternWhite.png"); }
+
+/* dark patterns flip default text to white */
+.bg.arrows-dark, .bg.morse-code-black, .bg.network-black,
+.bg.plus-dark, .bg.semiconductor-dark, .bg.topo-pattern-black { color: var(--asu-white); }
+
+/* ---------------------------------------------------------------------------
+   6. Columns
+   --------------------------------------------------------------------------- */
+.wp-block-columns { display: flex; gap: var(--gutter); margin: 0; }
+.wp-block-column  { flex: 1; min-width: 0; display: flex; }
+
+/* ---------------------------------------------------------------------------
+   7. Cards  (§7.6.3)
+   Four brand-standard types only: Default, Story, Event, Degree.
+   The block strips the "is-style-" prefix at render, so the FINAL class is
+   plain .card-story / .card-event / .card-degree.
+   Use card-vertical: stock horizontal card-v2 has a real upstream bug (its
+   default template never emits .card-body or .card-buttons, which the
+   horizontal grid rules depend on).
+   --------------------------------------------------------------------------- */
+.wp-card-v2.card {
+  display: flex; flex-direction: column; width: 100%;
+  background: var(--asu-white);
+  border: 1px solid var(--gray-2);
+  overflow: hidden;
+}
+.wp-card-v2 .card-img-top { width: 100%; height: 190px; object-fit: cover; display: block; }
+.wp-card-v2 .card-icon-top { font-size: 2.5rem; color: var(--asu-maroon); padding: var(--s4) var(--s3) 0; }
+.wp-card-v2 .card-header { background: none; border: 0; padding: var(--s3) var(--s3) 0; }
+.wp-card-v2 .card-header h3 { margin: 0; }
+
+/* the content group carries NO class in the block's default template —
+   target the plain group wrapper, same as blocks/_card-v2.scss does */
+.wp-card-v2 .wp-block-group { padding: var(--s2) var(--s3) 0; flex: 1; }
+.wp-card-v2 .wp-block-group p:last-child { margin-bottom: 0; }
+
+.wp-card-v2 .card-link { padding: var(--s3); font-weight: 700; }
+.wp-card-v2 .card-link a { color: var(--asu-maroon); text-decoration: underline; }
+.wp-card-v2 .wp-block-buttons { padding: var(--s3); }
+.wp-card-v2 .card-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; padding: var(--s3) var(--s3) 0; }
+
+.wp-card-v2 .card-event-details { padding: var(--s2) var(--s3) 0; font-size: 0.875rem; line-height: 1.125rem; }
+.wp-card-v2 .card-event-icons { display: flex; gap: 0.75rem; margin-bottom: 0.5rem; align-items: flex-start; }
+.wp-card-v2 .card-event-icons > div:first-child { color: var(--asu-maroon); width: 1rem; text-align: center; flex: none; }
+
+/* Story: short gold rule under the title (observed convention, §7.14.2) */
+.wp-card-v2.card-story .card-header h3::after {
+  content: ""; display: block; width: 40px; height: 4px;
+  background: var(--asu-gold); margin-top: var(--s2);
+}
+/* Event: gold rule beneath the image — vertical analogue of the confirmed
+   horizontal rule .card-event .card-img-top { border-right: 8px gold } */
+.wp-card-v2.card-event .card-img-top { border-bottom: 8px solid var(--asu-gold); }
+
+/* Degree: gold footer rule above the two-button CTA row */
+.wp-card-v2.card-degree .wp-block-buttons { border-top: 4px solid var(--asu-gold); margin-top: var(--s3); }
+
+/* ---------------------------------------------------------------------------
+   8. Content image overlap  (§7.10.2)
+   The gold accent bar is an observed live convention, not emitted by
+   content-media.php itself. It is a pseudo-element of .content-wrapper
+   (NOT of the outer flex row) on purpose: an early version hung it off
+   .uds-image-overlap with top/bottom set as a % of the whole row, which
+   only matched the white card's height by coincidence, when the image
+   and the card happened to be the same height. Anchoring it to the card
+   itself means top:0/bottom:0 is always exactly the card's own box.
+   --------------------------------------------------------------------------- */
+.uds-image-overlap {
+  position: relative; display: flex; align-items: center;
+  max-width: var(--content-max); margin: var(--s12) auto; padding: 0 2rem;
+}
+.uds-image-overlap img.img-fluid { width: 62%; height: auto; display: block; position: relative; z-index: 1; }
+.uds-image-overlap .content-wrapper {
+  position: relative; z-index: 2; width: 52%; margin-left: -14%;
+  background: var(--asu-white); padding: var(--s6);
+  box-shadow: 0 2px 18px rgba(25,25,25,0.10);
+}
+.uds-image-overlap .content-wrapper h2 { margin-bottom: var(--s2); }
+.uds-image-overlap .content-wrapper::before {
+  content: ""; position: absolute; top: 0; bottom: 0; width: 12px;
+  background: var(--asu-gold); z-index: 3; right: -1rem;
+}
+
+/* orientation "left" — content-left + ml-auto on the image */
+.uds-image-overlap.content-left { flex-direction: row-reverse; }
+.uds-image-overlap.content-left img.img-fluid { margin-left: auto; }
+.uds-image-overlap.content-left .content-wrapper { margin-left: 0; margin-right: -14%; }
+.uds-image-overlap.content-left .content-wrapper::before { left: -1rem; right: auto; }
+
+/* ---------------------------------------------------------------------------
+   9. Blockquote / testimonial  (§7.9.3)
+   Default style + image  -> .with-image, NO glyph
+   Default style, no image -> .accent-{color}, glyph renders
+   Testimonial style       -> .uds-testimonial .accent-{color}, glyph ALWAYS
+   --------------------------------------------------------------------------- */
+.uds-blockquote { max-width: 840px; margin: 0 auto; }
+.uds-blockquote svg { width: 3rem; height: auto; display: block; margin: 0 0 var(--s3); }
+.uds-blockquote blockquote { margin: 0; font-size: 1.25rem; line-height: 1.9rem; font-weight: 700; }
+.uds-blockquote .citation { margin-top: var(--s4); padding-top: var(--s3); position: relative; }
+.uds-blockquote cite { display: block; font-style: normal; }
+.uds-blockquote cite.name { font-weight: 700; font-size: 1rem; }
+.uds-blockquote cite.description { font-size: 0.875rem; line-height: 1.125rem; color: var(--gray-5); margin-top: 0.25rem; }
+
+.uds-blockquote.accent-gold   svg { fill: var(--asu-gold); }
+.uds-blockquote.accent-maroon svg { fill: var(--asu-maroon); }
+.uds-blockquote.accent-black  svg { fill: var(--gray-7); }
+.uds-blockquote .citation::before { content: ""; position: absolute; top: 0; left: 0; width: 80px; height: 4px; background: var(--asu-gold); }
+.uds-blockquote.accent-maroon .citation::before { background: var(--asu-maroon); }
+.uds-blockquote.accent-black  .citation::before { background: var(--gray-7); }
+
+/* testimonial variant is centered with the rule centered under the quote */
+.uds-testimonial { text-align: center; }
+.uds-testimonial svg { margin: 0 auto var(--s3); }
+.uds-testimonial blockquote { max-width: 700px; margin: 0 auto; }
+.uds-testimonial .citation::before { left: 50%; transform: translateX(-50%); }
+
+/* with-image variants place the portrait beside the quote */
+.uds-blockquote.with-image { display: flex; gap: var(--s6); align-items: center; text-align: left; }
+.uds-blockquote.with-image img { width: 240px; height: 240px; object-fit: cover; border-radius: 50%; flex: none; }
+.uds-blockquote.with-image.reversed { flex-direction: row-reverse; }
+
+/* ---------------------------------------------------------------------------
+   10. Accordion / foldable card  (§7.8)
+   Bootstrap 5 accordion with border-radius forced to 0. NOTE the real markup:
+   .accordion-header is a wrapper div that CLOSES before .accordion-body —
+   the body is a SIBLING of the header, not a child.
+   --------------------------------------------------------------------------- */
+.accordion { margin: var(--s3) 0; }
+.accordion-item {
+  margin-bottom: var(--s3);
+  border: 1px solid var(--gray-2);
+  border-radius: 0;
+  background: var(--asu-white);
+}
+.accordion-header h4 { margin: 0; }
+.accordion-header button {
+  width: 100%; display: flex; justify-content: space-between; align-items: center;
+  gap: var(--s2); text-align: left;
+  background: var(--asu-white); border: 0; padding: var(--s3);
+  cursor: pointer; font-family: inherit;
+  font-size: 1.25rem; font-weight: 700; line-height: 1.625rem; color: var(--gray-7);
+}
+/* 🎨 Figma: an OPEN item is tinted — header takes a light gray fill and the
+   body sits on the lighter gray below it. A CLOSED item stays plain white.
+   This is the clearest open/closed signal in the component and the kit was
+   missing it. Figma-derived, not in the reviewed Pitchfork SCSS. */
+.accordion-header button:not(.collapsed) { background: var(--gray-2); }
+.accordion-item:has(.accordion-body.show) { background: var(--gray-1); }
+.accordion-body.show { background: var(--gray-1); }
+
+/* 🎨 Figma: the chevron reads neutral dark, not maroon. The reviewed
+   render.php emits a bare <span class="fas fa-chevron-up"> with no color
+   class, so the color lives in CSS that was never part of the source dump —
+   Figma is the better evidence here, but treat it as design intent. */
+.accordion-header button .fa-chevron-up { font-size: 1rem; color: var(--gray-7); transition: transform 0.2s; }
+.accordion-header button.collapsed .fa-chevron-up { transform: rotate(180deg); }
+.accordion-header .accordion-icon { display: inline-flex; align-items: center; gap: 0.5rem; }
+.accordion-body { padding: 0 var(--s3) var(--s3); border-top: 1px solid var(--gray-2); }
+.accordion-body.collapse:not(.show) { display: none; }
+.accordion-body p:first-child { margin-top: var(--s2); }
+.accordion-body p:last-child  { margin-bottom: 0; }
+.accordion-body > *:last-child { margin-bottom: 0; }
+
+/* Accent colour variants, restricted to the 4 brand slugs in theme.json.
+   🎨 Figma CONFIRMS the slug drives a LEFT ACCENT BAR spanning the full
+   height of the item (header + body when open) — it is NOT a filled
+   background. Worth stating explicitly: "accordion-item-dark" sounds like a
+   dark card and is actually a white card with a black edge. */
+.accordion-item-gold   { border-left: 8px solid var(--asu-gold); }
+.accordion-item-maroon { border-left: 8px solid var(--asu-maroon); }
+.accordion-item-gray   { border-left: 8px solid var(--gray-4); }
+.accordion-item-dark   { border-left: 8px solid var(--gray-7); }
+
+/* ---------------------------------------------------------------------------
+   11. Alerts and banners  (§7.9.1 / §7.9.2)
+   Alert TYPE is set by BLOCK STYLE (className), not a field. The icon pairing
+   in alert.php is deliberately non-intuitive — success gets a bell, info gets
+   a check-circle, error gets an info-circle. Reproduce it as-coded.
+   Note the dismiss class is spelled `alert-dismissable` (one s) in source.
+   --------------------------------------------------------------------------- */
+.wp-block-alert.alert {
+  display: flex; align-items: flex-start; gap: var(--s2);
+  max-width: var(--content-max); margin: var(--s4) auto;
+  padding: var(--s2) var(--s4);
+  border: 1px solid; border-radius: 2px;
+  background: var(--alert-bg-warning); border-color: var(--alert-warning); /* default */
+}
+.wp-block-alert.alert.is-style-alert-warning { background: var(--alert-bg-warning); border-color: var(--alert-warning); }
+.wp-block-alert.alert.is-style-alert-success { background: var(--alert-bg-success); border-color: var(--alert-success); }
+.wp-block-alert.alert.is-style-alert-info    { background: var(--alert-bg-info);    border-color: var(--alert-info); }
+.wp-block-alert.alert.is-style-alert-error   { background: var(--alert-bg-error);   border-color: var(--alert-error); }
+
+.alert-icon { flex: none; font-size: 1.25rem; padding-top: 0.15rem; }
+.is-style-alert-warning .alert-icon { color: var(--alert-warning); }
+.is-style-alert-success .alert-icon { color: var(--alert-success); }
+.is-style-alert-info    .alert-icon { color: var(--alert-info); }
+.is-style-alert-error   .alert-icon { color: var(--alert-error); }
+.alert-content { flex: 1; }
+.alert-content p:only-child { margin-bottom: 0; }
+.alert-close { flex: none; }
+
+/* Banner — full-bleed section, inner content capped to the 1200px column.
+   Restyled as a transparent, borderless alert: color comes from banner-{slug}. */
+.wp-block-banner { max-width: var(--page-max); margin-left: auto; margin-right: auto; }
+.wp-block-banner .banner {
+  max-width: calc(var(--content-max) + var(--s4));
+  margin: 0 auto; padding: var(--s4);
+  display: flex; align-items: center; gap: var(--s3);
+}
+.wp-block-banner .banner.alert { background: transparent; border: 0; }
+.banner-gray   { background: var(--gray-2); }
+.banner-gold   { background: var(--asu-gold); }
+.banner-maroon { background: var(--asu-maroon); color: var(--asu-white); }
+.banner-black  { background: var(--gray-7);  color: var(--asu-white); }
+.banner-content { flex: 1; }
+.banner-content p:last-child { margin-bottom: 0; }
+.banner-buttons { display: flex; gap: var(--s2); flex: none; }
+
+/* ---------------------------------------------------------------------------
+   12. Grid links  (§7.10.3)
+   textColor produces the .text-{color} modifier the block requires.
+   Cells are transparent so a patterned section shows through.
+   --------------------------------------------------------------------------- */
+.uds-grid-links {
+  display: grid;
+  border-top: 1px solid rgba(25,25,25,0.22);
+  border-left: 1px solid rgba(25,25,25,0.22);
+}
+.uds-grid-links.two-columns   { grid-template-columns: repeat(2, 1fr); }
+.uds-grid-links.three-columns { grid-template-columns: repeat(3, 1fr); }
+.uds-grid-links.four-columns  { grid-template-columns: repeat(4, 1fr); }
+
+.uds-grid-links a {
+  display: flex; align-items: center; gap: 0.75rem;
+  padding: var(--s3) var(--s4);
+  background: transparent;
+  border-right: 1px solid rgba(25,25,25,0.22);
+  border-bottom: 1px solid rgba(25,25,25,0.22);
+  text-decoration: none; font-weight: 700; font-size: 1rem;
+  color: var(--gray-7);
+}
+.uds-grid-links a:hover { background: rgba(25,25,25,0.05); }
+.uds-grid-links a i, .uds-grid-links a .icon { color: var(--asu-maroon); width: 1.25rem; text-align: center; flex: none; }
+
+/* dark variant */
+.uds-grid-links.text-white { border-color: rgba(255,255,255,0.28); }
+.uds-grid-links.text-white a { color: var(--asu-white); border-color: rgba(255,255,255,0.28); }
+.uds-grid-links.text-white a:hover { background: rgba(255,255,255,0.07); }
+.uds-grid-links.text-white a i, .uds-grid-links.text-white a .icon { color: var(--asu-gold); }
+
+/* ---------------------------------------------------------------------------
+   13. Dividers, breadcrumb, misc  (§6.17 / §7.11)
+   --------------------------------------------------------------------------- */
+.wp-block-separator { border: 0; border-top: 1px solid var(--gray-4); margin: var(--s6) 0; }
+.wp-block-separator.is-style-copy-divider { max-width: 400px; margin-left: 0; }
+
+.breadcrumb { display: flex; flex-wrap: wrap; gap: 0.5rem; list-style: none; padding: 0; margin: 0; font-size: 0.875rem; }
+.breadcrumb-item + .breadcrumb-item::before { content: "/"; color: var(--gray-4); margin-right: 0.5rem; }
+.breadcrumb-item a { color: var(--asu-maroon); }
+.breadcrumb-item.active { color: var(--gray-7); }
+.breadcrumbs.is-style-crumb-dark .breadcrumb-item { color: var(--asu-white); }
+.breadcrumbs.is-style-crumb-dark .breadcrumb-item a { color: var(--asu-gold); }
+
+/* inline SVG icon sizing used by uds-icons.js */
+svg.ico { width: 1em; height: 1em; fill: currentColor; vertical-align: -0.125em; display: inline-block; }
+
+/* ---------------------------------------------------------------------------
+   14. Responsive
+   Mobile halves the section spacing (§4: 96px -> 48px), drops columns to a
+   single stack, and collapses the image-overlap into a stacked card.
+   --------------------------------------------------------------------------- */
+@media (max-width: 991px) {
+  h1 { font-size: 2.25rem; line-height: 2.5rem; }
+  h2 { font-size: 2rem;    line-height: 2.125rem; }
+  .wp-block-columns { flex-direction: column; }
+  .uds-image-overlap { flex-direction: column !important; padding: 0 1rem; margin: var(--s6) auto; }
+  .uds-image-overlap img.img-fluid { width: 100%; }
+  .uds-image-overlap .content-wrapper { width: 92%; margin: -3rem auto 0 !important; padding: var(--s4); }
+  .uds-image-overlap .content-wrapper::before { display: none; }
+  .uds-grid-links.two-columns,
+  .uds-grid-links.three-columns,
+  .uds-grid-links.four-columns { grid-template-columns: 1fr; }
+  .uds-blockquote.with-image { flex-direction: column !important; text-align: center; }
+  .wp-block-banner .banner { flex-direction: column; align-items: flex-start; }
+}
+
+/* ---------------------------------------------------------------------------
+   15. Table  (§6.11)  and  Lists  (§6.13)
+   ⚪ APPROXIMATION — READ THIS BEFORE TRUSTING IT.
+   The Table and Ordered/Unordered List components are documented in the UDS
+   kit (§6.11 "present or organize large amounts of data/stats together";
+   desktop tables scroll horizontally, mobile tables swipe) but NO table or
+   list SCSS partial was part of the reviewed Pitchfork source. Everything
+   below is derived from the §7.13 tokens plus Bootstrap 5 defaults, so it is
+   less trustworthy than the rest of this file. Selectors are core WordPress
+   block classes and HTML semantics only — no invented class names.
+   Group rows use <th scope="rowgroup" colspan="2">, values sit in the last
+   cell, so the right-alignment below is semantic rather than class-driven.
+   --------------------------------------------------------------------------- */
+.wp-block-table { margin: 0 0 var(--s4); overflow-x: auto; }
+.wp-block-table table { width: 100%; border-collapse: collapse; font-size: 1rem; line-height: 1.5rem; }
+.wp-block-table caption { caption-side: top; text-align: left; font-weight: 700; padding-bottom: var(--s2); }
+.wp-block-table th,
+.wp-block-table td { padding: 0.75rem 1rem; text-align: left; vertical-align: top; border-bottom: 1px solid var(--gray-2); }
+.wp-block-table thead th { font-weight: 700; border-bottom: 2px solid var(--gray-7); }
+.wp-block-table th[scope="row"] { font-weight: 400; padding-left: var(--s4); }
+.wp-block-table tbody th[scope="rowgroup"] { background: var(--gray-2); font-weight: 700; border-bottom: 1px solid var(--gray-4); }
+.wp-block-table tbody tr:hover td,
+.wp-block-table tbody tr:hover th[scope="row"] { background: var(--gray-1); }
+.wp-block-table td:last-child { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; font-weight: 700; }
+
+.wp-block-list { padding-left: 1.25rem; margin: 0 0 var(--s2); }
+.wp-block-list li { margin-bottom: 0.5rem; }
+.wp-block-list li:last-child { margin-bottom: 0; }
+/* a list used as a stat readout: value first, label after, no bullet noise */
+.wp-block-list.is-style-lead { list-style: none; padding-left: 0; font-size: 1rem; }
+
+/* ---------------------------------------------------------------------------
+   16. Cards — horizontal orientation  (§7.6.3, 🎨 Figma card sheet)
+   The kit previously refused to render these. The Figma sheet shows them used
+   heavily, so they are a designed-for variant, not an edge case.
+
+   ⚠️ THE UPSTREAM BUG, AND HOW THIS FILE WORKS AROUND IT
+   blocks/_card-v2.scss assigns grid-column:2 to .card-header, .card-body,
+   .card-event-details, .card-buttons, .card-link, .card-tags — but the block's
+   own default template never emits .card-body or .card-buttons (the content
+   group carries only metadata.name, and the buttons row carries no className),
+   so on a stock horizontal card the body copy and button row fall OUTSIDE the
+   grid column and the layout breaks. Rather than reproduce the break, the
+   rules below ALSO target the classes the block actually emits
+   (.wp-block-group, .wp-block-buttons). In production you either add the
+   .card-body / .card-buttons classes by hand in the Advanced panel, or you
+   accept the bug. Say which you did.
+
+   ⚠️ grid-row: 1 / -1 DOES NOT WORK HERE. The card has no explicit rows —
+   every row is implicit — and the -1 line only resolves against the EXPLICIT
+   grid, so it silently collapses to a single row and the image stops spanning.
+   Use a large explicit span instead. Same trap applies to any block whose
+   children are placed by auto-flow.
+   --------------------------------------------------------------------------- */
+@media (min-width: 768px) {
+  .wp-card-v2.card-horizontal {
+    display: grid;
+    grid-template-columns: 40% auto;
+    grid-auto-rows: min-content;      /* rows hug their content… */
+    align-content: start;             /* …and the stack sits at the top */
+  }
+  .wp-card-v2.card-horizontal > .card-img-top {
+    grid-column: 1; grid-row: 1 / span 99;   /* NOT 1 / -1 — see note above */
+    width: 100%; height: 100%; min-height: 220px; object-fit: cover;
+  }
+  .wp-card-v2.card-horizontal > .card-icon-top,
+  .wp-card-v2.card-horizontal > .card-header,
+  .wp-card-v2.card-horizontal > .card-body,
+  .wp-card-v2.card-horizontal > .wp-block-group,
+  .wp-card-v2.card-horizontal > .card-event-details,
+  .wp-card-v2.card-horizontal > .card-buttons,
+  .wp-card-v2.card-horizontal > .wp-block-buttons,
+  .wp-card-v2.card-horizontal > .card-link,
+  .wp-card-v2.card-horizontal > .card-tags { grid-column: 2; }
+  .wp-card-v2.card-horizontal > .card-icon-top { padding-top: var(--s3); padding-bottom: 0; }
+  .wp-card-v2.card-horizontal > .wp-block-group { flex: none; }
+  .wp-card-v2.card-horizontal > :last-child { padding-bottom: var(--s3); }
+
+  /* Story + horizontal is a DISTINCT treatment, not a combination: the photo
+     runs full-bleed behind the whole card and the text floats on top of it in
+     an opaque white panel. Done with positioning rather than grid stacking —
+     an auto-flow grid cannot place content into cells the image already
+     occupies, it just creates new rows underneath (which is what made the
+     first attempt render the panel BELOW the photo instead of over it). */
+  .wp-card-v2.card-story.card-horizontal {
+    display: block; position: relative; padding: var(--s6) 0;
+    border: 0; background: transparent;
+  }
+  .wp-card-v2.card-story.card-horizontal > .card-img-top {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%; object-fit: cover; z-index: 10;
+    border: 0;
+  }
+  .wp-card-v2.card-story.card-horizontal > *:not(.card-img-top) {
+    position: relative; z-index: 20;
+    background: var(--asu-white);
+    margin-left: 38%; margin-right: var(--s6);
+  }
+  .wp-card-v2.card-story.card-horizontal > .card-header { padding-top: var(--s4); }
+  .wp-card-v2.card-story.card-horizontal > :last-child { padding-bottom: var(--s4); }
+}
+
+/* ---------------------------------------------------------------------------
+   17. Image-based card  (acf/card-imagebased, §7.6.4, 🎨 Figma card sheet)
+   A separate block from the card-v2 family — insertable anywhere, no parent
+   restriction. Full-bleed photo with content overlaid on a bottom-up scrim.
+   Figma shows: dark gradient rising from the bottom, white heading sitting
+   bottom-left, and an optional GOLD button beneath it. These are the one
+   place a gold button appears routinely rather than once per page — the
+   button is inside a photographic card, not competing with page CTAs.
+   Class shape from render.php: uds-image-based-card {className} {orient}-{size}
+   ⚠️ portrait-lg has no CSS upstream and is force-downgraded to portrait-md.
+   --------------------------------------------------------------------------- */
+.uds-image-based-card {
+  position: relative; display: block; overflow: hidden;
+  background: var(--gray-7);
+}
+.uds-image-based-card img,
+.uds-image-based-card .img-resp {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+}
+.uds-image-based-card .card-img-overlay {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  align-items: flex-start; gap: var(--s2);
+  padding: var(--s4);
+  background: linear-gradient(to top, rgba(25,25,25,0.88) 0%, rgba(25,25,25,0.45) 42%, rgba(25,25,25,0) 78%);
+}
+.uds-image-based-card .card-img-overlay > * { margin: 0; }
+.uds-image-based-card .card-img-overlay h2,
+.uds-image-based-card .card-img-overlay h3,
+.uds-image-based-card .card-img-overlay h4 { color: var(--asu-white); }
+.uds-image-based-card .card-img-overlay p { color: var(--asu-white); }
+
+/* orientation x size. Aspect ratios, not fixed heights, so these survive
+   being dropped into columns of any width. */
+.uds-image-based-card.landscape-sm { aspect-ratio: 16 / 9;  }
+.uds-image-based-card.landscape-md { aspect-ratio: 3 / 2;   }
+.uds-image-based-card.landscape-lg { aspect-ratio: 2 / 1;   }
+.uds-image-based-card.square-sm,
+.uds-image-based-card.square-md,
+.uds-image-based-card.square-lg   { aspect-ratio: 1 / 1;    }
+.uds-image-based-card.portrait-sm { aspect-ratio: 4 / 5;    }
+.uds-image-based-card.portrait-md,
+.uds-image-based-card.portrait-lg { aspect-ratio: 3 / 4;    }
+
+@media (max-width: 767px) {
+  .uds-image-based-card { aspect-ratio: 3 / 2; }
+}
+
+/* ---------------------------------------------------------------------------
+   18. Card carousel  (§6.4, 🎨 Figma carousel sheet)
+   The NAV here is not guesswork: blocks/_blockquote-carousel.scss (§7.9.4) is
+   source-confirmed and the Figma card carousel uses the identical pattern —
+   dots above, two circular arrows below, both centred. So the dot sizes,
+   colours, gaps and disc styling below are 🟢, reused from that partial. Only
+   the card TRACK is 🎨.
+
+   ⚠️ NO CARD-CAROUSEL BLOCK EXISTS in the reviewed Pitchfork source. The only
+   carousel block is acf/blockquote-carousel, which carousels QUOTES. Render
+   this in previews, but do NOT emit wp:acf/... markup for it — see the
+   "design-only components" rule in CLAUDE.md.
+
+   ⚠️ ASU moves the controls OUT of Bootstrap's default position. Stock
+   Bootstrap overlays prev/next on the left and right edges of the slide; ASU
+   stacks indicators then controls underneath, centred. Do not assume stock.
+   --------------------------------------------------------------------------- */
+.carousel { position: relative; }
+.carousel-inner {
+  display: flex; gap: var(--gutter);
+  overflow-x: auto; scroll-snap-type: x mandatory;
+  scrollbar-width: none; padding-bottom: var(--s2);
+}
+.carousel-inner::-webkit-scrollbar { display: none; }
+.carousel-item {
+  flex: 0 0 auto; scroll-snap-align: start;
+  display: block; width: 300px;            /* overridden per-carousel below */
+}
+.carousel.per-2 .carousel-item { width: calc((100% - 1 * var(--gutter)) / 2); }
+.carousel.per-3 .carousel-item { width: calc((100% - 2 * var(--gutter)) / 3); }
+.carousel.per-4 .carousel-item { width: calc((100% - 3 * var(--gutter)) / 4); }
+.carousel.per-5 .carousel-item { width: calc((100% - 4 * var(--gutter)) / 5); }
+
+/* 🎨 The right-hand card is deliberately CLIPPED and faded — that peek is how
+   the component says "there is more", since the dots alone read as decoration.
+   Figma shows it on all three widths. */
+.carousel::after {
+  content: ""; position: absolute; top: 0; right: 0; bottom: var(--s6);
+  width: 90px; pointer-events: none;
+  background: linear-gradient(to right, rgba(255,255,255,0) 0%, var(--asu-white) 88%);
+}
+.carousel.on-dark::after { background: linear-gradient(to right, rgba(25,25,25,0) 0%, var(--gray-7) 88%); }
+
+/* nav — 🟢 values from blocks/_blockquote-carousel.scss (§7.9.4) */
+.carousel-nav { display: flex; flex-direction: column; align-items: center; gap: var(--s3); margin-top: var(--s4); }
+.carousel-indicators { display: flex; gap: 1rem; margin: 0; padding: 0; list-style: none; }
+.carousel-indicators button {
+  width: 1.125rem; height: 1.125rem; border-radius: 50%;
+  border: 0; padding: 0; cursor: pointer; background: #d9d9d9;
+}
+.carousel-indicators button.active { background: var(--gray-7); }
+.carousel-control-prev, .carousel-control-next {
+  width: 4rem; height: 4rem; border-radius: 50%; border: 0; cursor: pointer;
+  background: var(--gray-2); color: var(--gray-7);
+  display: inline-flex; align-items: center; justify-content: center; font-size: 1.25rem;
+}
+/* 🟢 the control pointing past the end is dimmed and inert — it does NOT loop */
+.carousel-control-prev[disabled], .carousel-control-next[disabled] {
+  background: #f8f8f8; color: var(--gray-4); pointer-events: none;
+}
+.carousel-buttons { display: flex; gap: var(--s3); }
+@media (max-width: 767px) {
+  .carousel-control-prev, .carousel-control-next { width: 4.25rem; height: 4.25rem; }
+  .carousel .carousel-item,
+  .carousel.per-2 .carousel-item, .carousel.per-3 .carousel-item,
+  .carousel.per-4 .carousel-item, .carousel.per-5 .carousel-item { width: 82%; }
+}
+
+/* ---------------------------------------------------------------------------
+   19. Overlay family — image + content compositions
+   (§6.6 Featured content, 🎨 Figma overlay sheet)
+
+   These are the "big overlay" layouts that carry most ASU feature sections.
+   Four related shapes, only TWO of which are confirmed block-backed:
+
+     Image overlap ............ acf/content-image-overlap   🟢 block
+     Image and text block ..... core/media-text             🟢 core block
+     CTA on image background .. core/cover (inferred)       ⚪ unconfirmed
+     Inset card on image ...... core/cover (inferred)       ⚪ unconfirmed
+
+   The last two use genuine WordPress core cover classes rather than invented
+   ones, but WHICH block ASU actually ships them as was not in the reviewed
+   source. Render them; do not assert the block name.
+   --------------------------------------------------------------------------- */
+
+/* --- gold accent bar, top-edge variant (🎨 Figma) ------------------------
+   The sheet shows the bar on the image's LEFT, RIGHT and TOP edge. The kit
+   only had left/right. Top reads as a "chapter opener" and is the most
+   distinct of the three. Anchored to .content-wrapper's own top edge and
+   sized to its full width, same reasoning as the left/right bars above —
+   it should match the card, not a fraction of the outer row. */
+.uds-image-overlap.bar-top .content-wrapper::before {
+  top: -1rem; bottom: auto; left: 0; right: auto;
+  width: 100%; height: 12px;
+}
+
+/* --- two-part heading inside the overlap card (🎨 Figma) -----------------
+   Figma consistently shows a gold-highlighted first line with a plain
+   second line beneath it, not a single long headline. Nothing new is needed
+   to build it — it is an h2 with a highlight span plus an h3 — but the
+   spacing between them is tight, so normalise it. */
+.uds-image-overlap .content-wrapper h2 + h3,
+.wp-block-cover .wp-block-cover__inner-container h2 + h3 { margin-top: var(--s2); }
+
+/* --- image and text block — core/media-text (§6.6) -----------------------
+   grid-row: 1 is load-bearing on both children, not decoration. With only
+   grid-column set, the auto-placement algorithm places .media (1st in
+   source order) in row 1 and advances its cursor past that row; .content
+   then wants column 1, which the cursor has already moved beyond, so the
+   browser opens a *second* row for it instead of reusing row 1 — that is
+   the "text drops to the bottom" bug. Pin both to row 1 explicitly so
+   column is the only thing that changes between the two directions. */
+.wp-block-media-text {
+  display: grid; grid-template-columns: 50% 1fr;
+  align-items: center; gap: 0;
+  max-width: var(--content-max); margin: var(--s12) auto;
+}
+.wp-block-media-text .wp-block-media-text__media { grid-column: 1; grid-row: 1; }
+.wp-block-media-text .wp-block-media-text__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.wp-block-media-text .wp-block-media-text__content { grid-column: 2; grid-row: 1; padding: var(--s6); }
+.wp-block-media-text .wp-block-media-text__content > *:last-child { margin-bottom: 0; }
+/* has-media-on-the-right is core WP's real modifier class */
+.wp-block-media-text.has-media-on-the-right .wp-block-media-text__media { grid-column: 2; }
+.wp-block-media-text.has-media-on-the-right .wp-block-media-text__content { grid-column: 1; }
+
+/* --- CTA / inset card on an image background — core/cover --------------- */
+.wp-block-cover {
+  position: relative; display: flex; align-items: center;
+  min-height: 320px; padding: var(--s8) var(--s6); overflow: hidden;
+}
+.wp-block-cover > img,
+.wp-block-cover .wp-block-cover__image-background {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; z-index: 0;
+}
+/* 🎨 Figma: a LEFT-TO-RIGHT dark scrim, not a flat tint over the whole photo.
+   A flat tint kills the image; the gradient keeps the right side readable as
+   a photograph while the left carries the type. */
+.wp-block-cover::before {
+  content: ""; position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(to right, rgba(25,25,25,0.85) 0%, rgba(25,25,25,0.55) 45%, rgba(25,25,25,0.15) 100%);
+}
+.wp-block-cover .wp-block-cover__inner-container {
+  position: relative; z-index: 2;
+  max-width: var(--content-max); margin: 0 auto; width: 100%;
+}
+.wp-block-cover .wp-block-cover__inner-container h2,
+.wp-block-cover .wp-block-cover__inner-container h3,
+.wp-block-cover .wp-block-cover__inner-container p { color: var(--asu-white); }
+
+/* the wide CTA band: heading left, single button right, on one line */
+.wp-block-cover.is-style-cta-band .wp-block-cover__inner-container {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--s6);
+}
+.wp-block-cover.is-style-cta-band .wp-block-buttons { flex: none; margin: 0; }
+
+/* the inset white card sitting on the photo */
+.wp-block-cover .uds-inset-card {
+  background: var(--asu-white); padding: var(--s6);
+  max-width: 460px; box-shadow: 0 2px 18px rgba(25,25,25,0.16);
+}
+.wp-block-cover .uds-inset-card h2,
+.wp-block-cover .uds-inset-card h3,
+.wp-block-cover .uds-inset-card p { color: var(--gray-7); }
+.wp-block-cover .uds-inset-card > *:last-child { margin-bottom: 0; }
+
+@media (max-width: 767px) {
+  .wp-block-media-text { grid-template-columns: 1fr; }
+  .wp-block-media-text .wp-block-media-text__media,
+  .wp-block-media-text .wp-block-media-text__content,
+  .wp-block-media-text.has-media-on-the-right .wp-block-media-text__media,
+  .wp-block-media-text.has-media-on-the-right .wp-block-media-text__content { grid-column: 1; }
+  .wp-block-cover.is-style-cta-band .wp-block-cover__inner-container {
+    flex-direction: column; align-items: flex-start;
+  }
+  /* .content-wrapper::before (all bar variants) is already display:none on
+     mobile per the stacked-column rule above — nothing more to override. */
+}
+
+/* ---------------------------------------------------------------------------
+   20. Global header  (§6.5, 🎨 Figma header/footer sheet)
+   ⚠️ NOT a Pitchfork ACF block. The real global header ships as the external
+   @asu/component-header npm package, injected outside the WordPress content
+   area — its actual compiled DOM/class names were not reviewed. This is a
+   Figma-accurate VISUAL approximation only: same copy, same two-tier
+   structure (dark utility bar + white main bar), our own class names
+   (ugh- = "uds global header"). It is REQUIRED on every page — use it as
+   the real header in every mockup, but say plainly that it's an
+   approximation if someone needs the literal package output.
+   --------------------------------------------------------------------------- */
+.uds-global-header { font-family: Arial, Helvetica, 'Nimbus Sans L', 'Liberation Sans', FreeSans, sans-serif; }
+.ugh-utility { background: var(--gray-7); }
+.ugh-utility-inner {
+  max-width: var(--content-max); margin: 0 auto; padding: 0.5rem 2rem;
+  display: flex; align-items: center; justify-content: flex-end; gap: 1.5rem;
+  font-size: 0.8125rem;
+}
+.ugh-utility-inner a { color: var(--asu-white); text-decoration: none; }
+.ugh-utility-inner a:hover { text-decoration: underline; }
+.ugh-utility-inner button {
+  background: none; border: 0; color: var(--asu-white); cursor: pointer;
+  display: inline-flex; padding: 0; font-size: 0.9rem;
+}
+.ugh-main { background: var(--asu-white); border-bottom: 1px solid var(--gray-2); }
+.ugh-main-inner {
+  max-width: var(--content-max); margin: 0 auto; padding: 1rem 2rem;
+  display: flex; align-items: center; gap: 1.5rem;
+}
+/* text-only wordmark lockup — deliberately typographic, not a logo image.
+   Keeps the kit free of trademarked artwork; swap for the real mark if you
+   have rights to it. */
+.ugh-logo {
+  font-weight: 700; font-size: 0.875rem; line-height: 1.15; color: var(--asu-maroon);
+  text-decoration: none; border-right: 1px solid var(--gray-3); padding-right: 1.5rem;
+  flex: none;
+}
+.ugh-unit { font-weight: 700; font-size: 1.25rem; color: var(--gray-7); flex: none; }
+.ugh-nav { margin-left: auto; display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
+.ugh-nav a {
+  color: var(--gray-7); text-decoration: none; font-weight: 700; font-size: 0.9375rem;
+  padding-bottom: 0.25rem; border-bottom: 3px solid transparent;
+  display: inline-flex; align-items: center; gap: 0.375rem;
+}
+.ugh-nav a:hover { border-bottom-color: var(--gray-3); }
+.ugh-nav a.active { border-bottom-color: var(--asu-gold); }
+.ugh-nav a i.fa-chevron-down, .ugh-nav a i.fa-angle-down { font-size: 0.7em; }
+.ugh-cta { flex: none; }
+
+@media (max-width: 900px) {
+  .ugh-main-inner { flex-wrap: wrap; }
+  /* .ugh-unit is flex:none above so it can sit inline next to a short unit
+     name on desktop — but that also means it won't shrink or wrap, so a
+     long unit name (e.g. "Enterprise Brand, Communications and Marketing
+     Guide") overflows the viewport at narrow widths instead of wrapping.
+     Give it the row to itself here so long names wrap normally. */
+  .ugh-unit { flex: 1 1 100%; min-width: 0; }
+  .ugh-nav { display: none; }   /* real component swaps this for the off-canvas panel below */
+}
+
+/* --- mobile off-canvas nav/search panel (🎨 Figma) ------------------------
+   A static illustration of the collapsed-nav state for a mockup — not wired
+   to a JS toggle. Show it once, separately, when a page needs to explain
+   its mobile nav rather than trying to fake an interactive drawer. */
+.ugh-mobile-panel {
+  max-width: 360px; background: var(--asu-white); box-shadow: 0 0 24px rgba(0,0,0,0.18);
+  padding: var(--s4);
+}
+.ugh-mobile-panel .ugh-mobile-head {
+  display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--s3);
+}
+.ugh-mobile-panel .ugh-mobile-close {
+  background: none; border: 0; font-size: 1.25rem; color: var(--gray-7); cursor: pointer;
+}
+.ugh-mobile-panel .ugh-mobile-sub { font-size: 0.8125rem; color: var(--gray-6); margin-bottom: var(--s3); }
+.ugh-mobile-panel .ugh-mobile-search {
+  display: flex; align-items: center; gap: 0.5rem; border: 1px solid var(--gray-3);
+  border-radius: var(--pill); padding: 0.5rem 1rem; margin-bottom: var(--s4); color: var(--gray-5);
+}
+.ugh-mobile-panel .ugh-mobile-search input {
+  border: 0; outline: 0; flex: 1; font-size: 0.9375rem; font-family: inherit; background: transparent;
+}
+.ugh-mobile-panel .ugh-mobile-links { list-style: none; margin: 0 0 var(--s4); padding: 0; }
+.ugh-mobile-panel .ugh-mobile-links li {
+  border-bottom: 1px solid var(--gray-2); padding: 0.75rem 0;
+  display: flex; align-items: center; justify-content: space-between;
+  font-weight: 700; color: var(--gray-7); font-size: 0.9375rem;
+}
+.ugh-mobile-panel .ugh-mobile-utility {
+  display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--gray-2);
+}
+.ugh-mobile-panel .ugh-mobile-utility a {
+  padding: 0.75rem 0; font-size: 0.875rem; color: var(--gray-7); text-decoration: none;
+  border-bottom: 1px solid var(--gray-2);
+}
+
+/* ---------------------------------------------------------------------------
+   21. Global footer  (§6.5, 🎨 Figma header/footer sheet)
+   ⚠️ Same caveat as the header above — a Figma-accurate visual
+   approximation of the external @asu/component-footer package, not its
+   compiled output. REQUIRED on every page. Three real compositions, all
+   built from the same building blocks (ugf-top / ugf-ribbon / ugf-legal) —
+   pick the one that fits the unit, don't default to "full" out of habit:
+
+     full       ugf-top (brand + all its columns) + ugf-ribbon + ugf-legal
+     collapsed  ugf-top with ONLY .ugf-col-brand, no other columns + ribbon + legal
+     minimal    no ugf-top at all — just ugf-ribbon + ugf-legal
+   --------------------------------------------------------------------------- */
+.uds-global-footer { font-family: Arial, Helvetica, 'Nimbus Sans L', 'Liberation Sans', FreeSans, sans-serif; }
+.ugf-top { background: var(--gray-7); }
+.ugf-top-inner { max-width: var(--content-max); margin: 0 auto; padding: var(--s6) 2rem; }
+.ugf-brand { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--s4); flex-wrap: wrap; }
+.ugf-logo { display: flex; flex-direction: column; color: var(--asu-white); }
+.ugf-logo strong { font-size: 1.125rem; }
+.ugf-logo span { font-size: 0.8125rem; color: var(--gray-3); margin-top: 0.125rem; }
+.ugf-social { display: flex; gap: 0.75rem; }
+.ugf-social a {
+  width: 2rem; height: 2rem; border-radius: 50%; border: 1px solid var(--gray-5);
+  color: var(--asu-white); display: inline-flex; align-items: center; justify-content: center;
+  text-decoration: none; font-size: 0.875rem;
+}
+.ugf-social a:hover { border-color: var(--asu-white); }
+.ugf-columns { display: flex; gap: var(--s6); flex-wrap: wrap; margin-top: var(--s6); }
+.ugf-col { flex: 1 1 160px; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.875rem; }
+.ugf-col strong { color: var(--asu-white); font-size: 0.9375rem; margin-bottom: 0.25rem; }
+.ugf-col a { color: var(--gray-3); text-decoration: none; }
+.ugf-col a:hover { color: var(--asu-white); text-decoration: underline; }
+.ugf-col-brand { flex: 1 1 220px; }
+.ugf-col-brand .btn-gold { margin-top: 0.5rem; align-self: flex-start; }
+.ugf-ribbon { background: var(--asu-gold); }
+.ugf-ribbon-inner {
+  max-width: var(--content-max); margin: 0 auto; padding: 0.875rem 2rem;
+  display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; font-size: 0.8125rem;
+}
+.ugf-ribbon-inner a { color: var(--gray-7); text-decoration: none; font-weight: 700; }
+.ugf-ribbon-inner a:hover { text-decoration: underline; }
+.ugf-rank { margin-left: auto; font-weight: 700; color: var(--gray-7); display: flex; align-items: center; gap: 0.5rem; }
+.ugf-rank small { display: block; font-weight: 400; font-size: 0.75rem; }
+.ugf-legal { background: var(--gray-1); }
+.ugf-legal-inner {
+  max-width: var(--content-max); margin: 0 auto; padding: 0.75rem 2rem;
+  display: flex; gap: 1.25rem; flex-wrap: wrap; font-size: 0.75rem;
+}
+.ugf-legal-inner a { color: var(--gray-6); text-decoration: none; }
+.ugf-legal-inner a:hover { text-decoration: underline; }
+
+/* --- mobile: columns collapse to an accordion (🎨 Figma) --- */
+@media (max-width: 767px) {
+  .ugf-brand { flex-direction: column; }
+  .ugf-columns { flex-direction: column; gap: 0; margin-top: var(--s4); }
+  .ugf-col:not(.ugf-col-brand) {
+    border-top: 1px solid var(--gray-6); padding: var(--s3) 0;
+  }
+  .ugf-col:not(.ugf-col-brand) strong {
+    display: flex; align-items: center; justify-content: space-between; margin-bottom: 0;
+    cursor: pointer;
+  }
+  .ugf-col:not(.ugf-col-brand) strong::after {
+    content: "\f078"; font-family: "Font Awesome 6 Free"; font-weight: 900; font-size: 0.75rem;
+  }
+  .ugf-col:not(.ugf-col-brand) a { display: none; } /* accordion starts collapsed in this static mockup */
+  .ugf-rank { margin-left: 0; }
+}
+
+/* ---------------------------------------------------------------------------
+   22. Testimonial / quote — Figma composition variants (§6.16, §7.9.3/.4)
+   The base .uds-blockquote/.uds-testimonial classes and their accent/
+   with-image/reversed logic are 🟢 source-confirmed (§7.9.3). Everything
+   below is 🎨 — Figma showing what those SAME confirmed classes actually
+   look like in the compositions ASU uses, not new markup.
+   --------------------------------------------------------------------------- */
+
+/* stacked quotes (a list of 2-3 in one column) want breathing room between */
+.uds-blockquote + .uds-blockquote { margin-top: var(--s6); }
+
+/* with-image, forced vertical — same block, used in a column too narrow for
+   the side-by-side layout (e.g. one cell of a 3-up quote grid). */
+.uds-blockquote.with-image.stacked { flex-direction: column; text-align: center; }
+.uds-blockquote.with-image.stacked img { width: 120px; height: 120px; }
+
+/* --- alt-citation (🎨 Figma) --------------------------------------------
+   uds_blockquote_alt is source-confirmed (§7.9.3) to add "alt-citation" —
+   the Figma sheet shows what it actually renders: the name sits in a solid
+   color chip, shown ABOVE the quote text, next to a circular photo. DOM
+   order stays real-source-first (citation is still markup-last, inside
+   blockquote) — the chip is moved above the quote with flex `order`, the
+   same technique the hero uses to put the subtitle under the headline
+   (§7.14.1). Don't reorder the actual HTML to "fix" this. */
+.uds-blockquote.alt-citation { display: flex; gap: var(--s4); align-items: flex-start; text-align: left; }
+.uds-blockquote.alt-citation img { width: 96px; height: 96px; border-radius: 50%; object-fit: cover; flex: none; }
+.uds-blockquote.alt-citation blockquote { display: flex; flex-direction: column; margin: 0; flex: 1; }
+.uds-blockquote.alt-citation .citation { order: -1; margin: 0 0 var(--s3); padding: 0; }
+.uds-blockquote.alt-citation .citation::before { display: none; }
+.uds-blockquote.alt-citation cite.name {
+  display: inline-block; background: var(--asu-gold); color: var(--gray-7);
+  padding: 0.25rem 0.75rem; font-size: 0.9375rem; width: fit-content;
+}
+.uds-blockquote.alt-citation.accent-black cite.name,
+.uds-blockquote.alt-citation.accent-maroon cite.name { background: var(--gray-7); color: var(--asu-white); }
+.uds-blockquote.alt-citation cite.description { display: none; } /* Figma: chip carries the name only */
+.uds-blockquote.alt-citation svg { display: none; }              /* the chip replaces the glyph here */
+@media (max-width: 767px) {
+  .uds-blockquote.alt-citation { flex-direction: column; align-items: flex-start; }
+}
+
+/* --- quote on image background (§6.16, 🎨 Figma) -------------------------
+   Same core/cover scrim as the CTA/inset-card overlay family (§19) — just a
+   .uds-blockquote inside instead of a heading or a card. The two widths in
+   the Figma sheet are the same block; only the blockquote's own max-width
+   changes, so use .narrow rather than inventing a second component.
+
+   ⚠️ The white-text rules below must NOT reach a blockquote nested inside
+   .uds-inset-card — that card is itself a white box sitting on the photo
+   (§19), so its own text stays dark like every other .uds-inset-card
+   heading/paragraph. Scope with a plain child selector rather than
+   ".wp-block-cover .uds-blockquote" or the inset-card variant renders
+   white-on-white and disappears. */
+.wp-block-cover .uds-blockquote { max-width: 640px; text-align: left; }
+.wp-block-cover .uds-blockquote.narrow { max-width: 420px; }
+.wp-block-cover__inner-container > .uds-blockquote blockquote,
+.wp-block-cover__inner-container > .uds-blockquote cite.name { color: var(--asu-white); }
+.wp-block-cover__inner-container > .uds-blockquote cite.description { color: var(--gray-3); }
+.wp-block-cover .uds-blockquote svg { fill: var(--asu-gold); }
+/* on a photo, Figma drops the colored rule for a plain em dash before the name */
+.wp-block-cover__inner-container > .uds-blockquote .citation::before { display: none; }
+.wp-block-cover__inner-container > .uds-blockquote cite.name::before { content: "\2014\00a0"; }
+/* the inset-card variant stays dark-on-white, same as every other card */
+.uds-inset-card .uds-blockquote blockquote,
+.uds-inset-card .uds-blockquote cite.name { color: var(--gray-7); }
+.uds-inset-card .uds-blockquote cite.description { color: var(--gray-5); }
